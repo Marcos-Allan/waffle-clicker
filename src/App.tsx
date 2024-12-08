@@ -95,7 +95,7 @@ function App() {
 
   return (
     <div
-      className={`w-screen h-screen flex flex-col justify-center items-center text-2xl bg-my-quartenary`}
+      className={`w-[100dvw] h-[100dvh] flex flex-col justify-center items-center text-2xl bg-my-quartenary`}
     >
       <div className={`fixed top-0 left-0 w-full pt-5 flex justify-center text-xl`}>
         <p className={`text-center absolute text-[28px] text-my-quintenary`}>Waffle Clicker</p>
