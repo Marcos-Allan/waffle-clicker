@@ -101,7 +101,7 @@ function App() {
       {googleLogged == true ? (
       <>
           
-          <div className={`fixed top-0 left-0 w-full pt-32 flex justify-center text-xl`}>
+          <div className={`fixed top-0 left-0 w-full pt-32 flex justify-center text-xl z-[5]`}>
             <p className={`text-center absolute text-[32px] text-my-quintenary`}>{formatNumber(waffles)}</p>
             <p className={`text-center absolute text-[32px] text-my-primary transform`}
             style={{ transform: "translate(5px, -5px)" }}>{formatNumber(waffles)}</p>
