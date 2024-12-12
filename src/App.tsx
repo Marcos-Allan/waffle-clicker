@@ -6,6 +6,8 @@ import waffle from './assets/imgs/waffle.png'
 import cursor from './assets/imgs/cursor.png'
 import heart from './assets/imgs/heart.png'
 import google from './assets/imgs/google-logo.png'
+import bg from './assets/imgs/wood.jpg'
+import plate from './assets/imgs/plate.png'
 
 //IMPORTAÇÃO DOS SERVIÇOS DO FIREBASE
 import { auth, provider, signInWithPopup } from './utils/firebase.ts'
@@ -19,25 +21,17 @@ function App() {
   const [ritmo, setRitmo] = useState<number>(1)
   const [cursors, setCursors] = useState<number>(0)
   
-  const cursorsPrices:number[] = [100, 200, 500, 1000, 2000, 2500]
-  const ritmoPrices:number[] = [0, 100, 200, 400, 800, 1600, 3200]
+  const cursorsPrices:number[] = [100, 200, 400, 600, 800, 1000, 1500, 2000, 2500, 3000]
+  const ritmoPrices:number[] = [0, 100, 200, 400, 600, 800, 100, 1200, 1600, 2000, 3000]
 
   //FUNÇÃO RESPONSÁVEL POR FAZZER LOGIN COM O GOOGLE
   const handleGoogleLogin = async () => {
     try {
       //REALIZA O LOGIN VIA POPUP DO GOOGLE
       const result = await signInWithPopup(auth, provider);
-      
-      //OBTÈM OS DADOS DO USUÁRIO
-      const user = result.user;
-      
-      // FAZ LOGIN COM A CONTA DO USÁRIO
-      if(result.user){
-        console.log(user.email || "", user.displayName || "", user.photoURL || "")
-      }
 
       //PERMITI O USUÁRIO PODER JOGAR O JOGO
-      setGoogleLogged(true)
+      setGoogleLogged(result.user ? true : false)
 
     } catch (error) {
       console.error("Erro durante o login:", error);
@@ -87,7 +81,6 @@ function App() {
     //FUNÇÃO RESPONSÁVEL POR PEGAR WAFFLES AUTOMATICAMENTE POR SEGUNDO
     const getWafflesPorSeconds = setInterval(() => {
       setWaffles(waffles => waffles + cursors);
-      console.log(cursors)
     }, 1000);
 
     return () => clearInterval(getWafflesPorSeconds);
@@ -95,11 +88,14 @@ function App() {
 
   return (
     <div
-      className={`w-[100dvw] h-[100dvh] flex flex-col justify-center items-center text-2xl bg-my-quartenary`}
+      style={{ backgroundImage: `url('${bg}')` }}
+      className={`
+        w-[100dvw] h-[100dvh] flex flex-col justify-center items-center text-2xl bg-my-quartenary bg-contain bg-left
+      `}
     >
       <div className={`fixed top-0 left-0 w-full pt-5 flex justify-center text-xl`}>
         <p className={`text-center absolute text-[28px] text-my-quintenary`}>Waffle Clicker</p>
-        <p className={`text-center absolute text-[28px] text-my-terciary transform`}
+        <p className={`text-center absolute text-[28px] text-my-secondary transform`}
         style={{ transform: "translate(5px, -5px)" }}>Waffle Clicker</p>
       </div>
       {googleLogged == true ? (
@@ -112,15 +108,22 @@ function App() {
           </div>
 
           <img
+            src={plate}
+            alt="Imagem e Prato"
+            className={`pb-[100px] fixed z-[1] min-w-[650px] pe-[30px]`}
+          />
+
+          <img
             src={waffle}
             alt="Imagem do Waffle"
             onClick={() => {
               getWaffles()
               moveWaffle()
             }}
-            className={`pb-[100px] ${waffleClicked == true ? 'animate-shake' : ''}`}
+            className={`pb-[100px] z-[3] ${waffleClicked == true ? 'animate-shake' : ''}`}
             id='waffle'
           />
+
 
           <div className={`w-full fixed bottom-0 left-0 flex flex-col items-start justify-center `}>
             <div className={`w-full flex justify-end items-center`}>
@@ -143,14 +146,13 @@ function App() {
               
             </div>
 
-            <div className={`w-full flex items-center justify-between p-6 bg-my-primary`}>
+            <div className={`w-full flex items-center justify-between p-6 bg-[#00000067]`}>
 
               <div className={`flex flex-col items-center justify-start `}>
                 <img
                   src={heart}
                   alt=""
                   onClick={() => {
-                    console.log(waffles)
                     if(waffles < cursorsPrices[cursors]){
                       return
                     }else{
@@ -164,9 +166,9 @@ function App() {
                   }}
                   className={`w-20 h-auto`}
                 />
-                <p className={`pl-3 mt-3 text-my-quintenary uppercase
-                  ${cursors > cursorsPrices.length - 1 && 'line-through text-[#ff3131]'}
-                  ${waffles < cursorsPrices[cursors] ? 'text-[#ff0000]' : ''}
+                <p className={`pl-3 mt-3 uppercase
+                  ${waffles < cursorsPrices[cursors] || cursors > cursorsPrices.length - 1 ? 'text-my-red' : 'text-my-quintenary'}
+                  ${cursors > cursorsPrices.length - 1 && 'line-through text-my-red'}
                 `}>
                   {cursors > cursorsPrices.length - 1 ? 'sold' : cursorsPrices[cursors]}
                 </p>
@@ -177,7 +179,6 @@ function App() {
                   src={cursor}
                   alt=""
                   onClick={() => {
-                    console.log(waffles)
                     if(waffles < ritmoPrices[ritmo]){
                       return
                     }else{
@@ -191,9 +192,9 @@ function App() {
                   }}
                   className={`h-[66px] w-auto`}
                 />
-                <p className={`pl-3 mt-3 text-my-quintenary uppercase
-                  ${ritmo > ritmoPrices.length - 1 && 'line-through text-[#ff3131]'}
-                  ${waffles < ritmoPrices[ritmo] ? 'text-[#ff0000]' : ''}
+                <p className={`pl-3 mt-3 uppercase
+                  ${waffles < ritmoPrices[ritmo] || ritmo > ritmoPrices.length - 1 ? 'text-my-red' : 'text-my-quintenary'}
+                  ${ritmo > ritmoPrices.length - 1 && 'line-through text-my-red'}
                 `}>
                   {ritmo > ritmoPrices.length - 1 ? 'sold' : ritmoPrices[ritmo]}
                 </p>
@@ -208,9 +209,10 @@ function App() {
                   //FAZ LOGIN COM REDIRECIONAMENTO PARA OUTRA PÁGINA
                   handleGoogleLogin()
               }}
-              className={`bg-my-quintenary rounded-[30px] w-[250px] h-[250px] flex items-center justify-center`}
+              className={`bg-[#ffffffac] rounded-[10px] flex items-center justify-center pe-[80px] capitalize border-[4px] border-my-terciary`}
             >
-              <img src={google} alt="" className={`w-[4000px]`} />
+              <img src={google} alt="" className={`w-[175px]`} />
+              <p>login</p>
           </div>
         </>
       )} 

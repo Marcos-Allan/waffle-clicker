@@ -12,6 +12,7 @@ export default {
         "my-terciary": "#A65D03",
         "my-quartenary": "#F2B05E",
         "my-quintenary": "#F2F0F0",
+        "my-red": "#FF3131",
       },
       keyframes: {
         shake: {
