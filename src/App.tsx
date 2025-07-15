@@ -15,7 +15,7 @@ import { auth, provider, signInWithPopup } from './utils/firebase.ts'
 function App() {
 
   //UTILIZAÇÃO DO HOOK useState
-  const [googleLogged, setGoogleLogged] = useState<boolean>(false)
+  const [googleLogged, setGoogleLogged] = useState<boolean>(true)
   const [waffleClicked, setWaffleClicked] = useState<boolean>(false)
   const [waffles, setWaffles] = useState<number>(0)
   const [ritmo, setRitmo] = useState<number>(1)
